@@ -19,13 +19,15 @@ class LeafNode(HTMLNode):
         '''
         commenting this out for <link href="www.example.com"></link>
         if not self.value:
-            raise ValueError("Leaf Nodes should have value")
+            raise ValueError("Leaf Nodes must have value")
         '''
         if not self.tag:
             return self.value
         prop_string = self.props_to_html() if self.props else ""
         value_string = self.value if self.value else ""
         return f"<{self.tag}{prop_string}>{value_string}</{self.tag}>"
+
+    
 
 
 

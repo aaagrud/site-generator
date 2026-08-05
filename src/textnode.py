@@ -1,5 +1,6 @@
 from enum import Enum
 from typing import Union
+from leafnode import LeafNode
 
 class TextType(Enum):
     ITALICS = "italics"
@@ -20,7 +21,3 @@ class TextNode():
 
     def __repr__(self):
         return f"TextNode({self.text}, {self.type.value}, {self.url})"
-
-    
-    
-    
