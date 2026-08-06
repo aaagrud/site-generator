@@ -1,4 +1,4 @@
-from htmlnode import HTMLNode
+from src.models.htmlnode import HTMLNode
 import unittest
 
 class TestHtmlNode(unittest.TestCase):

@@ -1,11 +1,11 @@
 import unittest
-import conversion_helpers
-from textnode import TextNode, TextType
+import src.helpers.inline_conversion_helpers as inline_conversion_helpers
+from src.models.textnode import TextNode, TextType
 
 class TestHelpers(unittest.TestCase):
     def test_italics(self):
         nodes: list[TextNode] =[TextNode("Hello _bestie_!", TextType.TEXT)]
-        split_nodes: list[TextNode] = conversion_helpers.split_nodes_delimiter(nodes, '_', TextType.ITALICS)
+        split_nodes: list[TextNode] = inline_conversion_helpers.split_nodes_delimiter(nodes, '_', TextType.ITALICS)
         expected_nodes_list: list[TextNode] = [
             TextNode("Hello ", TextType.TEXT),
             TextNode("bestie", TextType.ITALICS),
@@ -14,13 +14,13 @@ class TestHelpers(unittest.TestCase):
         self.assertEqual(split_nodes, expected_nodes_list)
 
     def test_extract_markdown_images(self):
-        matches = conversion_helpers.extract_markdown_images(
+        matches = inline_conversion_helpers.extract_markdown_images(
             "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
         )
         self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
 
     def test_extract_markdown_links(self):
-        matches = conversion_helpers.extract_markdown_links(
+        matches = inline_conversion_helpers.extract_markdown_links(
             "This is text with an [image](https://i.imgur.com/zjjcJKZ.png)"
         )
         self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
@@ -30,7 +30,7 @@ class TestHelpers(unittest.TestCase):
             "This is text with a [link](https://i.imgur.com/zjjcJKZ.png) and another [second link](https://i.imgur.com/3elNhQu.png)",
             TextType.TEXT,
         )
-        new_nodes = conversion_helpers.split_nodes_link([node])
+        new_nodes = inline_conversion_helpers.split_nodes_link([node])
         self.assertListEqual(
             [
                 TextNode("This is text with a ", TextType.TEXT),
@@ -46,7 +46,7 @@ class TestHelpers(unittest.TestCase):
             "This is text with a [link](https://i.imgur.com/zjjcJKZ)!",
             TextType.TEXT,
         )
-        new_nodes = conversion_helpers.split_nodes_link([node])
+        new_nodes = inline_conversion_helpers.split_nodes_link([node])
         self.assertListEqual(
             [
                 TextNode("This is text with a ", TextType.TEXT),
@@ -61,7 +61,7 @@ class TestHelpers(unittest.TestCase):
             "This is **text** with a [link](https://i.imgur.com/zjjcJKZ)!",
             TextType.TEXT,
         )
-        new_nodes = conversion_helpers.split_nodes_link([node])
+        new_nodes = inline_conversion_helpers.split_nodes_link([node])
         self.assertListEqual(
             [
                 TextNode("This is **text** with a ", TextType.TEXT),
@@ -76,7 +76,7 @@ class TestHelpers(unittest.TestCase):
             "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
             TextType.TEXT,
         )
-        new_nodes = conversion_helpers.split_nodes_images([node])
+        new_nodes = inline_conversion_helpers.split_nodes_images([node])
         self.assertListEqual(
             [
                 TextNode("This is text with an ", TextType.TEXT),
@@ -92,7 +92,7 @@ class TestHelpers(unittest.TestCase):
             "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)!",
             TextType.TEXT,
         )
-        new_nodes = conversion_helpers.split_nodes_images([node])
+        new_nodes = inline_conversion_helpers.split_nodes_images([node])
         self.assertListEqual(
             [
                 TextNode("This is text with an ", TextType.TEXT),
@@ -107,7 +107,7 @@ class TestHelpers(unittest.TestCase):
             "This is **text** with an ![image](https://i.imgur.com/zjjcJKZ.png)!",
             TextType.TEXT,
         )
-        new_nodes = conversion_helpers.split_nodes_images([node])
+        new_nodes = inline_conversion_helpers.split_nodes_images([node])
         self.assertListEqual(
             [
                 TextNode("This is **text** with an ", TextType.TEXT),
@@ -131,4 +131,4 @@ class TestHelpers(unittest.TestCase):
             TextNode(" and a ", TextType.TEXT),
             TextNode("link", TextType.LINK, "https://boot.dev"),
         ] 
-        self.assertEqual(expected_output, conversion_helpers.text_to_textnodes(text)) 
+        self.assertEqual(expected_output, inline_conversion_helpers.text_to_textnodes(text)) 

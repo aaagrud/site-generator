@@ -1,15 +1,6 @@
-from enum import Enum
 from typing import Union
-from leafnode import LeafNode
-
-class TextType(Enum):
-    ITALICS = "italics"
-    BOLD = "bold"
-    LINK = "link"
-    IMAGE = "image"
-    TEXT = "text"
-    CODE = "code"
-
+from src.models.leafnode import LeafNode
+from src.constants import TextType
 class TextNode():
     def __init__(self, text: str, type: TextType, url: Union[str, None] = None):
         self.text = text
