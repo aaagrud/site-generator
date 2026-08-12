@@ -1,4 +1,4 @@
-from src.models.htmlnode import HTMLNode
+from models.htmlnode import HTMLNode
 from typing import Union
 
 class LeafNode(HTMLNode):

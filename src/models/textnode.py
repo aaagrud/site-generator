@@ -1,6 +1,6 @@
 from typing import Union
-from src.models.leafnode import LeafNode
-from src.constants import TextType
+from models.leafnode import LeafNode
+from constants import TextType
 class TextNode():
     def __init__(self, text: str, type: TextType, url: Union[str, None] = None):
         self.text = text
