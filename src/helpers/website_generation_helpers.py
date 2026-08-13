@@ -12,7 +12,7 @@ def extract_header(md: str) -> str:
             return line[2:].strip()
     raise Exception("No heading found in md file")
 
-def generate_page(src_path: str, template_path: str, dest_path: str):
+def generate_page(src_path: str, template_path: str, dest_path: str, base_path: str):
     print(f"generating page from {src_path} to {dest_path} using {template_path}")
     try:
         with open(src_path) as src:
@@ -27,15 +27,13 @@ def generate_page(src_path: str, template_path: str, dest_path: str):
 
     src_in_html = markdown_to_htmlnode(src_content).to_html()
     title = extract_header(src_content)
-    new_template_content = template_content.replace("{{ Title }}", title).replace("{{ Content }}", src_in_html)
-
-
+    new_template_content = template_content.replace("{{ Title }}", title).replace("{{ Content }}", src_in_html).replace('href="/', f'href="{base_path}').replace('src="/', f'src="{base_path}')
     dest_file = Path(dest_path)
     dest_file.parent.mkdir(exist_ok=True, parents=True)
     with open(dest_file, 'w') as file:
         file.write(new_template_content)
 
-def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str):
+def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir_path: str, base_path: str):
     try:
         content_dir_contents = os.listdir(dir_path_content)
         for file_item in content_dir_contents:
@@ -43,8 +41,8 @@ def generate_pages_recursive(dir_path_content: str, template_path: str, dest_dir
             file_dest_dir_path = os.path.join(dest_dir_path, file_item)
             if os.path.isfile(content_file_item_path):
                 file_dest_dir_path = file_dest_dir_path.replace('.md', '.html')
-                generate_page(content_file_item_path, template_path, file_dest_dir_path)
+                generate_page(content_file_item_path, template_path, file_dest_dir_path, base_path)
             else:
-                generate_pages_recursive(content_file_item_path, template_path, file_dest_dir_path)
+                generate_pages_recursive(content_file_item_path, template_path, file_dest_dir_path, base_path)
     except:
         raise Exception("failed to generate pages, please check files in content/")
