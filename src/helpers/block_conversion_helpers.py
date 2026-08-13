@@ -1,10 +1,10 @@
 import re
-import src.helpers.inline_conversion_helpers as inline_conversion_helpers
-from src.constants import BlockType, TextType
-from src.models.htmlnode import HTMLNode
-from src.models.textnode import TextNode
-from src.models.leafnode import LeafNode
-from src.models.parentnode import ParentNode
+import helpers.inline_conversion_helpers as inline_conversion_helpers
+from constants import BlockType, TextType
+from models.htmlnode import HTMLNode
+from models.textnode import TextNode
+from models.leafnode import LeafNode
+from models.parentnode import ParentNode
 
 def markdown_to_blocks(markdown: str) -> list[str]:
     blocks = markdown.split('\n\n')
@@ -120,7 +120,6 @@ def list_children(md: str, list_type: BlockType) -> list[HTMLNode]:
         child_nodes.append(LeafNode("li", list_item[index:]))
     return child_nodes
 
-
 def quote_tag_content(quote_md: str) -> str:
     '''
     takes an input string like:
@@ -131,6 +130,8 @@ def quote_tag_content(quote_md: str) -> str:
     quotes = quote_md.split('\n')
     quotes_without_md_tag = []
     for quote in quotes:
+        if len(quote) < 2:
+            continue
         if quote[1] == ' ':
             quotes_without_md_tag.append(quote[2:])
             continue

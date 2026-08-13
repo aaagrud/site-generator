@@ -1,9 +1,9 @@
 from models.textnode import TextNode
 from models.textnode import TextType
-from helpers.file_helpers import copy_content_static_to_public
+from helpers.file_helpers import copy_content_static_to_public_recursive
+from helpers.website_generation_helpers import generate_pages_recursive
 
 def main():
-    line = TextNode("hey", TextType.TEXT, None)
-    print(line)
-    print(copy_content_static_to_public('./static', './public'))
+    copy_content_static_to_public_recursive('./static', './public')
+    generate_pages_recursive('./content', './template.html', './public')
 main()
